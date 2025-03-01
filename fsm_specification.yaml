@@ -1,0 +1,23 @@
+alphabet_in:
+- RETRY_LIMIT_REACHED
+- DONE
+- ERROR
+- RETRY
+default_start_state: MaxTimeoutsReachedRound
+final_states: []
+label: optimism0AbciApp
+start_states:
+- MaxTimeoutsReachedRound
+states:
+- VerificationRound
+- RetryLimitRound
+- MaxTimeoutsReachedRound
+- CircuitBreakerRound
+transition_func:
+  (CircuitBreakerRound, ERROR): MaxTimeoutsReachedRound
+  (MaxTimeoutsReachedRound, RETRY): VerificationRound
+  (RetryLimitRound, DONE): CircuitBreakerRound
+  (RetryLimitRound, ERROR): MaxTimeoutsReachedRound
+  (VerificationRound, DONE): CircuitBreakerRound
+  (VerificationRound, ERROR): MaxTimeoutsReachedRound
+  (VerificationRound, RETRY_LIMIT_REACHED): RetryLimitRound
