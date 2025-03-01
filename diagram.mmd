@@ -1,0 +1,13 @@
+graph TD
+  MaxTimeoutsReachedRound
+  VerificationRound
+  RetryLimitRound
+  MaxTimeoutsReachedRound
+  CircuitBreakerRound
+  CircuitBreakerRound -->|ERROR| MaxTimeoutsReachedRound
+  MaxTimeoutsReachedRound -->|RETRY| VerificationRound
+  VerificationRound -->|DONE| CircuitBreakerRound
+  VerificationRound -->|ERROR| MaxTimeoutsReachedRound
+  VerificationRound -->|RETRY_LIMIT_REACHED| RetryLimitRound
+  RetryLimitRound -->|DONE| CircuitBreakerRound
+  RetryLimitRound -->|ERROR| MaxTimeoutsReachedRound
